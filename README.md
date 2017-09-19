@@ -1,4 +1,4 @@
-![awslambda](https://user-images.githubusercontent.com/993459/30618317-b46fec10-9d4e-11e7-8b88-fa506380a9e4.png)
+![awslambda](https://user-images.githubusercontent.com/993459/30618399-18099064-9d4f-11e7-9e18-5b138cf77382.png)
 
 # Serverless - The FaaS (Function-as-a-Service)
 ## Observations and notes
