@@ -10,3 +10,10 @@ First Serverless App
 $ serverless config credentials --provider aws --key XXXXXX --secret XXXXX -overwrite
 $ serverless deploy
 $ serverless invoke -f hello -l
+
+- Simple Rest Service
+$
+$
+$
+```
+
