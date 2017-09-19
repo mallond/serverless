@@ -40,9 +40,12 @@ $ lambda-local -f handler -e event.json -t 20
 ```
 
 ### AWS API Gateway
-```
-$
-$
-$
+Needed to access the FaaS
+[AWS API for lambda](http://docs.aws.amazon.com/apigateway/latest/developerguide/getting-started.html)
 
+### Other
+[Test Post via requestb.in](https://requestb.in]
+  https://requestb.in/1lbyni81
+```  
+curl -X POST -d "fizz=buzz" https://requestb.in/1lbyni81
 ```

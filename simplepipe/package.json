@@ -16,6 +16,7 @@
   "author": "David Mallon",
   "license": "MIT",
   "dependencies": {
+    "unirest": "^0.5.1",
     "uuid": "^3.1.0"
   }
 }
