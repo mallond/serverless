@@ -51,3 +51,5 @@ Needed to access the FaaS
 ```  
 curl -X POST -d "fizz=buzz" https://requestb.in/1lbyni81
 ```
+
+[Martin Fowler - Serverless Architecture](https://martinfowler.com/articles/serverless.html)
