@@ -9,7 +9,6 @@ const uuidV4 = require('uuid/v4');
 const observableDiff = require('deep-diff').observableDiff,
   applyChange        = require('deep-diff').applyChange;
 
-
 let options = {
   "headers": {
   },
@@ -20,9 +19,6 @@ let options = {
 const payloadCache = [];
 const DEFAULT_PAYLOAD = 'DEFAULT_PAYLOAD';
 payloadCache[DEFAULT_PAYLOAD] = options.payload;
-
-
-
 
 // Read from Cache otherwise dup default into cache
 const readDOM = (id)=> {
