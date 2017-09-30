@@ -1,3 +1,7 @@
+
+NOTE Refernce only. Used deep-diff for partial DOM updates. 
+Example:
+
 'use strict';
 const unirest = require('unirest');
 const uuidV4 = require('uuid/v4');
