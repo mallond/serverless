@@ -1,0 +1,90 @@
+'use strict';
+const unirest = require('unirest');
+const uuidV4 = require('uuid/v4');
+
+const observableDiff = require('deep-diff').observableDiff,
+  applyChange        = require('deep-diff').applyChange;
+
+
+let options = {
+  "headers": {
+  },
+  "payload": {
+   }
+};
+
+const payloadCache = [];
+const DEFAULT_PAYLOAD = 'DEFAULT_PAYLOAD';
+payloadCache[DEFAULT_PAYLOAD] = options.payload;
+
+
+
+
+// Read from Cache otherwise dup default into cache
+const readDOM = (id)=> {
+  if (id==='') {
+    let thePayload = payloadCache[DEFAULT_PAYLOAD];
+    thePayload = JSON.parse(JSON.stringify(thePayload));
+    return thePayload;
+  }
+  if (payloadCache[id]) {
+    return payloadCache[id];
+  } else {
+    let thePayload = payloadCache[DEFAULT_PAYLOAD];
+    thePayload = JSON.parse(JSON.stringify(thePayload));
+    return thePayload;
+  }
+};
+
+// Write into cache by id
+const writeDOM = (id, DOM)=>{
+  payloadCache[id]=DOM;
+};
+
+// Insure RHS has id otherwise return ''
+const idRHS = (rhs)=>{
+  if (typeof rhs.META==='undefined') {
+    return '';
+  } else {
+    if (rhs.META.id==='undefined') {
+      return '';
+    } else {
+      return rhs.META.id;
+    }
+  }
+};
+
+// The Service Wrapper
+module.exports.invoke = (callback, eventPayload) => {
+  // RHS right hand side from event payload
+  // LHS left hand side is Cached id
+  let rhs = JSON.parse(eventPayload.body).input;
+  let lhs = readDOM(idRHS(rhs));
+
+  // Observer for E = Edit
+  //   kind - indicates the kind of change; will be one of the following:
+  // N - indicates a newly added property/element
+  // D - indicates a property/element was deleted
+  // E - indicates a property/element was edited
+  // A - indicates a change occurred within an array
+  observableDiff(lhs, rhs, function (d) {
+	  if ((d.kind==='E' || d.kind==='A') && (d.path.length !==1 || d.path.join('.') !== 'name')) {
+      console.log(d);
+      applyChange(lhs, rhs, d);
+    }
+  });
+  // Call Service
+  unirest.post('https://serviceCall')
+    .headers(options.headers)
+    .send(lhs)
+    .end(function(response) {
+      if (lhs.META.id==='') {
+        lhs.META.id = uuidV4();
+      }
+      //DOM mutated write to cache the target LHS
+      writeDOM(lhs.META.id,lhs);
+      callback(null, {payload: response.raw_body.status === 1 ?response.raw_body.data:response.raw_body,
+        status: response.raw_body.status === 1 ? '1' : '-1', id:lhs.META.id
+      });
+    })
+}
